@@ -4,6 +4,13 @@ $(document).ready(function() {
     var regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return regex.test(email);
   }
+   // Attach show/hide event on page load
+  $("#togglePassword").on("click", function () {
+    const passwordField = $("#Password");
+    const type = passwordField.attr("type") === "password" ? "text" : "password";
+    passwordField.attr("type", type);
+    $(this).text(type === "password" ? "Show" : "Hide");
+  });
 
   $("form").submit(function (event) {
     event.preventDefault();
