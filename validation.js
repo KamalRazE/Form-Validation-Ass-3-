@@ -11,6 +11,12 @@ $(document).ready(function() {
     passwordField.attr("type", type);
     $(this).text(type === "password" ? "Show" : "Hide");
   });
+  $("#toggleConfirmPassword").on("click", function () {
+    const passwordField = $("#Confirm-Password");
+    const type = passwordField.attr("type") === "password" ? "text" : "password";
+    passwordField.attr("type", type);
+    $(this).text(type === "password" ? "Show" : "Hide");
+  });
 
   $("form").submit(function (event) {
     event.preventDefault();
