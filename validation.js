@@ -1,16 +1,18 @@
-$(document).ready(function() {
+$(document).ready(function () {
   // Utility function to check for a valid email format
   function isEmail(email) {
     var regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return regex.test(email);
   }
-   // Attach show/hide event on page load
+
+  // Show/Hide Password Toggle
   $("#togglePassword").on("click", function () {
     const passwordField = $("#Password");
     const type = passwordField.attr("type") === "password" ? "text" : "password";
     passwordField.attr("type", type);
     $(this).text(type === "password" ? "Show" : "Hide");
   });
+
   $("#toggleConfirmPassword").on("click", function () {
     const passwordField = $("#Confirm-Password");
     const type = passwordField.attr("type") === "password" ? "text" : "password";
@@ -18,6 +20,22 @@ $(document).ready(function() {
     $(this).text(type === "password" ? "Show" : "Hide");
   });
 
+  // 🔒 Block characters in phone number input
+  $("#phoneno").on("keypress", function (e) {
+    // Allow only digits (0–9)
+    if (!/^\d$/.test(e.key)) {
+      e.preventDefault();
+    }
+  });
+
+  $("#phoneno").on("paste", function (e) {
+    const pasteData = e.originalEvent.clipboardData.getData('text');
+    if (!/^\d+$/.test(pasteData)) {
+      e.preventDefault();
+    }
+  });
+
+  // 🧪 Form Validation
   $("form").submit(function (event) {
     event.preventDefault();
     var errorMessages = "";
@@ -30,7 +48,7 @@ $(document).ready(function() {
     }
 
     // --- Phone Number Validation ---
-     if ($("#phoneno").val() === "") {
+    if ($("#phoneno").val() === "") {
       errorMessages += "<p>Phone number is required.</p>";
     } else if (!$.isNumeric($("#phoneno").val())) {
       errorMessages += "<p>Phone number must contain only digits.</p>";
@@ -56,18 +74,19 @@ $(document).ready(function() {
         errorMessages += "<p>Password must contain at least one number.</p>";
       }
     }
+
     if ($("#Confirm-Password").val() === "") {
       errorMessages += "<p>Confirm Password is required.</p>";
     }
     if (
       $("#Password").val() &&
       $("#Confirm-Password").val() &&
-      $("#Password").val() != $("#Confirm-Password").val()
+      $("#Password").val() !== $("#Confirm-Password").val()
     ) {
       errorMessages += "<p>Passwords do not match.</p>";
     }
 
-    // --- Display results ---
+    // --- Display Result ---
     if (errorMessages !== "") {
       $("#errors")
         .html("<h3>Please correct the following errors:</h3>" + errorMessages)
