@@ -20,17 +20,21 @@ $(document).ready(function () {
     $(this).text(type === "password" ? "Show" : "Hide");
   });
 
-  // 🔒 Block characters in phone number input
+  // 🔒 Block characters in phone number input and limit to 10 digits
   $("#phoneno").on("keypress", function (e) {
-    // Allow only digits (0–9)
-    if (!/^\d$/.test(e.key)) {
+    const currentVal = $(this).val();
+    // Allow only digits (0–9) and limit to 10 characters
+    if (!/^\d$/.test(e.key) || currentVal.length >= 10) {
       e.preventDefault();
     }
   });
 
   $("#phoneno").on("paste", function (e) {
     const pasteData = e.originalEvent.clipboardData.getData('text');
-    if (!/^\d+$/.test(pasteData)) {
+    const currentVal = $(this).val();
+    const combined = currentVal + pasteData;
+
+    if (!/^\d+$/.test(pasteData) || combined.length > 10) {
       e.preventDefault();
     }
   });
